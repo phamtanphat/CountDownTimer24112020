@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.hinh4,
             R.drawable.hinh5,
     };
+    int mCount = 0;
+    boolean mIsStarted = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,5 +49,33 @@ public class MainActivity extends AppCompatActivity {
 
         mImageSwitcher.setOutAnimation(out);
         mImageSwitcher.setInAnimation(in);
+
+        mBtnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mIsStarted == false){
+                    CountDownTimer countDownTimer = new CountDownTimer(1200 , 1000) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            mIsStarted = true;
+                            if (millisUntilFinished - 1000 > 0){
+                                if (mCount >= mArrImages.length){
+                                    mCount = 0;
+                                }
+                                mImageSwitcher.setImageResource(mArrImages[mCount++]);
+                            }
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            this.start();
+                        }
+                    };
+                    countDownTimer.start();
+                }
+
+            }
+        });
+
     }
 }
